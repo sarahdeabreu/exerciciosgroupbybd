@@ -1,0 +1,149 @@
+EXERCÍCIOS 05/09/22
+
+1– Mostrar a média salarial dos médicos agrupados por cidade.
+select sum(salario)
+from medicos
+group by cidade;
+
+
+
+2– Mostrar a média salarial dos médicos agrupados por especialidade.
+select sum(salario)
+from medicos
+group by especialidade;
+
+
+
+3– Mostrar o maior salário dos médicos agrupados por cidade e especialidade.
+select max(salario) 
+from medicos
+group by cidade,especialidade;
+
+
+
+4– Mostrar o menor salário dos médicos agrupados por especialidade e cidade.
+select min(salario) 
+from medicos
+group by cidade,especialidade;
+
+
+
+5– Mostrar a soma dos salários dos médicos agrupados por cidade, mas somente dos médicos que morem em bauru ou agudos.
+select sum(salario),cidade
+ from medicos
+ group by cidade
+ having (cidade ='bauru' or cidade ='agudos');
+
+
+
+6– Mostrar a soma dos salários dos médicos agrupados por cidade, mas somente dos salários entre 1999 e 3999.
+select sum(salario),cidade
+from medicos
+where (salario >= 1999 and salario <= 3999)
+group by cidade;
+
+
+
+7– Mostrar a soma dos salários dos médicos agrupados por cidade, mas somente os médicos que morem em bauru ou agudos e também dos médicos com salário entre 1999 e 3999.
+select sum(salario),cidade,salario
+from medicos
+where (salario >= 1999 and salario <= 3999)
+group by cidade
+having (cidade ='bauru' or cidade ='agudos');
+
+
+
+8–Mostrar a quantidade de médicos agrupados por especialidade.
+select count(medico),especialidade
+from medicos
+group by especialidade;
+
+
+
+9– Mostrar a quantidade de médicos agrupados por cidade com salário entre 1999 e 4999 e que morem em jau, bauru ou agudos.
+select count(medico),cidade
+from medicos
+where salario >= 1999 and salario <= 4999
+group by cidade
+having cidade = 'bauru' or cidade = 'jau' or cidade ='agudos';
+
+
+
+10– Utilizar todas as funções de agregação em um único script de agrupamento de dados.
+select especialidade,max(salario),
+min(salario) 'Menor Salário',
+avg(salario) 'Média Salarial',
+sum(salario) 'Total de Salário',
+count(*) 
+from medicos
+group by especialidade;
+
+
+
+11– Usar todas as funções de agregação em um único script de agrupamento de dados utilizando where e having.
+select especialidade,max(salario),
+min(salario) 'Menor Salário',
+avg(salario) 'Média Salarial',
+sum(salario) 'Total de Salário',
+count(*) 'Total de Médicos'
+from medicos
+where (salario >= 1000 and salario <= 9000)
+group by especialidade
+having especialidade = 'cardiologista' or especialidade = 'pediatra'
+order by especialidade;
+
+
+
+12– Criar uma tabela com grupo, subgrupo, fornecedor, produtos e preço. Inserir pelo menos 3 produtos para cada situação(grupo, subgrupo e fornecedor). Desenvolver pelo menos 5 scripts que utilizem funções de agrupamento e agregação.
+create table fashion(
+idfash int not null auto_increment,
+nomemarca varchar (100) not null, 
+paismarca varchar (100) not null,
+loja varchar (150) not null, 
+preco decimal(9,2) not null ,
+fornecedor varchar (100) not null,
+primary key(idfash)
+);
+
+
+
+insert into fashion values (0,'Dior','Franca','Souq Outlet', 200,'Bernard Arnault');
+insert into fashion values (0,'LVMH','Franca','Moët et Chandon', 130,'Bernard Arnault');
+insert into fashion values (0,'Fendi','Italia','Fendi Industria Srl', 150,'Adele Fendi');
+insert into fashion values (0,'Sephora','Franca','Lapuente', 700,'Sephora Commitment');
+insert into fashion values (0,'Celiné','Franca','Souq Outlet', 320 ,'Group LVMH Inc.');
+insert into fashion values (0,'Tiffany & Co.','EUA','Moët et Chandon', 111 ,'Group LVMH Inc.');
+
+
+
+
+select * from fashion;
+select nomemarca,max(preco) 'Maior preço'
+from fashion;
+
+
+
+select nomemarca,min(preco)'Menor preço'
+from fashion;
+
+
+
+select count(idfash) 'Total'
+from fashion;
+
+
+
+select paismarca,max(preco) 'Maior preço',
+              min(preco) 'Menor preço',
+              sum(preco) 'Total',
+              count(*) 
+from fashion
+group by paismarca
+having paismarca ='Franca' or cidade = 'Itália';    
+
+
+select sum(preco)'Soma de todos os preços dos remédios'
+from fashion;
+
+
+
